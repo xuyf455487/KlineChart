@@ -6,10 +6,10 @@
  ****************************************************
 ## 效果图
 
-<img src="https://github.com/icechao/KlineChart/blob/master/1565013719576.gif" width="320" hegiht="500" align=center />
+<img src="https://github.com/icechao/KlineChart/blob/master/1565013719576.gif" width="320" hegiht="480" align=center />
 
 
-## 使用步骤: 
+## 五步接入: 
 
 1. 添加依赖  Add dependency
             
@@ -35,10 +35,10 @@
             
             工程的build.gradle中  In the mudule's build.gradle
 
-                        implementation 'com.icechao.klinelib:klinelib:1.1.7'
+                        implementation 'com.icechao.klinelib:klinelib:2.0.2'
 
             
-2. <b>继承KlineEntry复写对应方法返回 高 开 低 收 量 时间 Inherit the corresponding method of klineentry replication to return the time, high ,opening and low, receipt</b>
+2. <b>继承KlineEntry定义自己的K线的数据Bean,复写抽象方法返回 :高 开 低 收 量 时间 The order information inherits the data bean of klineentry to define its own K-line, and the replication abstract method returns: high opening and low receipt time</b>
   
             public class KChartBean extends KLineEntity {
             //必须覆写此方法返回毫秒值 Override this method to return the time in milliseconds
@@ -85,113 +85,128 @@
              //app:...
              />
              
-4. <b>使用KlineLib中的ScrollView已解决滑动冲突,也可参考解决滑动布局 Use the Scrollview in klinelib to solve the sliding conflict, or refer to solve the sliding layout</b>
+4. <b>使用自己定义的数据Bean为K线绑定数据  Bind data for K-line with self-defined data bean</b>
+  
+            kLineChartView.getAdapter().resetData(List<KChartBean>)
+             
+5. <b>使用KlineLib中的ScrollView已解决滑动冲突,也可参考解决滑动布局 Use the Scrollview in klinelib to solve the sliding conflict, or refer to solve the sliding layout</b>
              
 
 
       使用属性配置   属性  
         
-      | Attribute name | Value type | Attribute implication | Default value | 
+      | Attribute name | Value type | Attribute implication | Default value |
       | ------ | ------ | ------ | ------ |  
-      | betterXLabel  | boolean | 左右两边时间label完整展示 | true  X轴label可能重叠,false截断展示 |
-      | betterSelectedXLabel  | boolean | 选中X坐标在屏幕边缘时向内缩进 |  |
-      | marketInfosLabel  | resource | 行情文字(字符串数组) | 行情文字 默认中文 |
-      | maiLegendMarginTop  | dimension | 主视图Legend上边距 | 10 |
-      | dateLabelHorizentalPadding  | dimension | X轴label横向pading,影响选中时 | 10 |
-      | dateLabelVerticalPadding  | dimension | X轴label纵向pading | 10 |
-      | maiLegendMarginTop  | dimension | 主视图Legend上边距 | 10 |
-      | paddingBottom  | dimension | chart上部内容边距 | 15,底部显示X轴label空间 |
-      | paddingTop  | dimension | 主视图Lengend上边距 | 30,第一个网格的位置 |
-      | childPaddingTop  | dimension | 所有子视图上边距 | 15 |
-      | chartLogo  | resource | 主视图logo | |
-      | candleRightPadding  | dimension | 主视图与右侧内边距 | |
-      | increaseColor  | color | 涨颜色| |
-      | decreaseColor  | color | 跌颜色| |
-      | chartTextSize  | dimension | 通用文字大小| |
-      | textColor  | color | 文字颜色| |
-      | limitTextColor  | color | 最大最小值文字颜色| |
-      | limitTextSize  | dimension | 最大最小值文字大小| |
-      | lineWidth  | dimension | 指标线线宽 | |
-      | klineItemWidth  | dimension | 蜡烛图加外围空隙宽| |
-      | candleWidth  | dimension | 蜡烛图柱宽 | |
-      | candleLineWidth  | dimension | K线空心时宽度 | |
-      | priceLineWidth  | dimension | 价格线宽 | 1dp |
-      | priceLineColor  | color | 价格线颜色 | |
-      | priceLineRightColor  | color | 价格线右侧虚线时颜色 | |
-      | priceLineRightLabelTextColor  | color | 价格线右侧虚线价格文字颜色 | |
-      | priceLineRightLabelBackGroundColor  | color | 价格线右侧Label背景 | |
-      | priceLineBackgroundColor  | color | 价格线横框背景色 | #CFD3A9 |
-      | priceLineBoxMarginRight  | dimension | 价格框右边距 | 120 |
-      | priceLineBoxShapeWidth  | dimension | 价格线框内三角形占宽| 10 |
-      | priceLineBoxShapeHeight  | dimension | 价格线框内三角形占高| 20 |
-      | priceLineBoxHeight  | dimension | 价格线上的框高度| 40 |
-      | priceLineBoxPadding  | dimension | 价格线上的框的内边距| 20 |
-      | priceLineBoxShapeTextMargin  | dimension | 价格框文字与图形距离| 10 |
-      | priceLineBoxBorderWidth  | dimension | 价格线框边框宽度| 1 |
-      | priceLineBoxBorderColor  | color | 价格线框边框颜色| #CFD3A9 |
-      | backgroundFillTopColor  | color |背景渐变上部颜色 | #1C1E27 |
-      | backgroundFillBottomColor  | color |背景渐变下部颜色 | 控制背景色 |
-      | backgroundAlpha  | integer | 背景色透明度| 控制背景色 default 18 |
-      | backgroundColor   | color | 背景色  | 控制背景色 |
-      | dotRightPriceBoxBackGroundAlpha  | integer | 虚线右侧最新价格填充透明度 default 150 | |
-      | yLabelMarginRight  | dimension | y轴上label与右侧边距 |10 |
-      | timeLineColor   | color| 分时线颜色| |
-      | timeLineFillTopColor  | color | 分时线填充渐变上部颜色 | |
-      | timeLineFillBottomColor  | color |背景色渐变下部颜色 | |
-      | timeLine_endPointColor  | color | 分时线尾颜色 | |
-      | timeLine_endMultiply  | int | 分时线尾圆变化最大倍数 | |
-      | timeLine_endRadiu  | dimension | 分时线尾圆半径 | |
-      | candleSolid  | boolean | K线是否空心| false |
-      | gridLineWidth  | dimension | 网格线宽| |
-      | gridLineColor  | color | 网格颜色 | |
-      | gridLineColumns  | integer | 网格列数 | |
-      | gridLineRows  | integer | 网格行数 | |
-      | selectXLineWidth  | dimension | 选中十字线X轴线宽| |
-      | selectLabelBoderWidth  | dimension | 选中十字线label边框线宽| 2 |
-      | selectLabelBoderColor  | color | 选中坐标边框颜色| |
-      | selectYLineWidth  | dimension | 十字线Y轴线宽| |
-      | selectXLineColor  | color |选中十字线X线颜色 | |
-      | selectYLineColor  | color |  选中十字线Y线画笔颜色| |
-      | selectYColor  | color | 选中十字线Y轴渐变色,-1时不绘制渐变| |
-      | selectCrossBigColor  | color | 选中十字线相交点圆颜色| |
-      | selectCrossPointColor  | color | 选中十字线相交点圆颜色 | |
-      | selectShowCrossPoint  | color | 是否显示选中十字线相交点圆 | |
-      | selectCrossPointRadius  | color | 选中十字线相交点小圆半径 | |
-      | selectPriceBoxBackgroundColor  | color | 选中价格框背景色 | |
-      | selectPriceBoxHorizentalPadding  | dimension | 选中价格框的横向padding,三角形的高为横+纵padding | 4dp |
-      | selectPriceBox_verticalPadding  | dimension | 选中价格框的纵向向padding,三角形的高为横+纵padding | 2dp |
-      | selectInfoBoxMargin  | dimension | 选中行弹出框的margin | |
-      | selectInfoBoxPadding  | dimension | 选中行弹出框行间距,上下为此值*2 | |
-      | selectInfoBoxTextColor  | dimension | 选中行弹出框文字颜色 | Color.WHITE |
-      | selectInfoBoxBorderColor  | dimension | 选中行弹出框边框颜色 | Color.WHITE |
-      | selectInfoBoxBackgroundColor  | dimension | 选中行弹出框背景颜色 | Color.DKGRAY |
-      | selectTextSize  | dimension | 选择框文字大小 | |
-      | macdIncreaseColor  | color | macd标准线上柱颜色| |
-      | macdDecreaseColor  | color | macd标准线下柱颜色 | |
-      | macdWidth  | dimension | macd柱状图宽度 | |
-      | difColor  | color | dif线颜色 | |
-      | deaColor  | color | dea线颜色 | |
-      | macdColor  | color | macd线颜色 | |
-      | kColor  | color | k线的颜色 | |
-      | dColor  | color | d线的颜色 | |
-      | jColor  | color | j线的颜色 | |
-      | rsi1Color  | color | 第1根rsi线的颜色 | 与ma线一致 |
-      | rsi2Color  | color | 第2根rsi线的颜色 | 与ma线一致 |
-      | ris3Color  | color | 第3根rsi线的颜色 | 与ma线一致 |
-      | upColor  | color | up线颜色 | |
-      | mbColor  | color | mb线颜色 | |
-      | dnColor  | color | dn线颜色 | |
-      | wr1Color  | color | 第1根wr线的颜色| |
-      | wr2Color  | color | 第2根wr线的颜色| 暂无 |
-      | wr3Color  | color | 第3根wr线的颜色| 暂无 |
-      | ma1Color  | color | 第1根ma线的颜色 | |
-      | ma2Color  | color | 第2根ma线的颜色 | |
-      | ma3Color  | color | 第3根ma线的颜色 | |
-      | volMa1Color  | color | 第1根量ma线的颜色 | |
-      | volMa2Color  | color | 第2根量ma线的颜色 | |
-      | volLengendColor   | color| 成交量图例颜色 | |
-      | volLineChartColor  | color | 成交量显示线状图时的颜色 | #4B85D6 |
-      | volLengendMarginTop  | dimension | 成交量图例距离成交量顶部距离 | 10 |
+      | selectedXLabelBackgroundColor | color|  设置选中X轴坐标背景色 |   |
+      | priceLabelInLineTextColor | color|  设置价格线上的文字颜色 |   |
+      | priceLabelInLineTextSize | color|  设置价格线上的文字大小 |   |
+      | selectedLabelTextColor | color|  设置选中X坐标文字颜色 |   |
+      | selectedLabelTextSize | dimension |  设置选中X坐标文字大小 |   |
+      | priceLabelInLineBoxMarginRight | dimension |  设置价格线上价格框离右距离 |   |
+      | priceLabelInLineShapeWidth | dimension | 价格线上价格图形宽  |   |
+      | priceLabelInLineShapeHeight | dimension | 价格线上价格图形高  |   |
+      | priceLabelInLineBoxHeight | dimension | 设置价格线上价格框高度  |   |
+      | priceLabelInLineBoxPadding | dimension | 设置价格线上价格框内边距  |   |
+      | priceLabelInLineBoxShapeTextMargin | dimension | 价格线上价格文字与图形的间隔  |   |
+      | priceLabelInLineClickable | boolean |  设置价格线价格框可点击 |   |
+      | priceLabelInLineBoxBackgroundColor | color |  设置右侧价格框背景色 |   |
+      | priceLabelRightBackgroundColor | color |  设置价格线右侧框背景 |   |
+      | priceLabelInLineBoxBorderColor | color |  设置价格线右侧框边框颜色 |   |
+      | priceLabelInLineBoxBorderWidth | dimension |  设置价格线框边框宽度 |   |
+      | priceLabelInLineBoxRadius | dimension |  设置价格线上价格框圆角半径 |   |
+      | priceLineRightLabelBackGroundAlpha | integer | 设置价格线右侧标签的背景透明度  |   |
+      | priceLabelRightTextColor | color | 设置价格线右侧价格文字的颜色  |   |
+      | priceLineRightColor | color |  设置价格线右侧的颜色 |   |
+      | ppriceLineWidth | color |  设置价格线的宽度  |   |
+      | priceLineColor | color |  设置价格线颜色 |   |
+      | priceLineDotSolidWidth | dimension |  价格线虚线实心宽度 |   |
+      | priceLineDotStrokeWidth | dimension | 价格线实心间隔  |   |
+      | selectedXLineWidth | dimension |  设置选择器横线宽 |   |
+      | selectedYLineWidth | dimension | 设置十字线竖线宽度  |   |
+      | selectedXLineColor | color |  设置十字线横线颜色  |   |
+      | selectedYLineColor | color |  设置十字线竖线画笔颜色  |   |
+      | selectedYColor | color | 选中的线的Y轴颜色  |   |
+      | selectedCrossBigColor | color | 设置都十字线选中点外圆颜色|   |
+      | selectedCrossPointRadius | dimension |  设置十字线相交小圆半径 |   |
+      | selectedCrossPointColor | color |  设置十字线交点小圆颜色 |   |
+      | selectedShowCrossPoint | boolean | 设置选中时是否显示十字线的交点圆  |   |
+      | selectedPriceBoxBackgroundColor | color | 设置选中Y值背景色  |   |
+      | selectedInfoTextSize | dimension |  设置选择器文字大小 |   |
+      | selectedPriceBoxHorizontalPadding | dimension | 选中时价格label的横向padding  |   |
+      | selectedPriceBoxVerticalPadding | dimension | 选中时价格label的纵向padding  |   |
+      | selectedInfoBoxPadding | dimension |  选中信息框内边距,上下为此值*2 |   |
+      | selectedInfoBoxMargin | dimension | 选中行弹出框与边缘的距离  |   |
+      | selectedInfoBoxTextColor | color |  设置选择器弹出框文字颜色 |   |
+      | selectedInfoBoxBorderColor | color | 设置选择器弹出框边框颜色  |   |
+      | selectedInfoBoxBackgroundColor | color |设置选择器背景颜色  |   |
+      | selectedLabelBorderWidth | dimension |  选中时X坐标边框线宽|   |
+      | selectedLabelBorderColor | color | 选中时X坐标边框线颜色  |   |
+      | selectedInfoLabel | reference | 设置选中框的文本  |   |
+      | closeFollowTouch | boolean | 设置十字线跟随手势移动/显示收盘价  |   |
+      | yLabelMarginBorder | dimension | 设置y轴上Label与视图右边距  |   |
+      | backgroundFillTopColor | color |  设置背景色顶部颜色  |   |
+      | backgroundFillBottomColor | color |  设置背景色底部颜色  |   |
+      | timeLineColor | color | 设置分时线颜色  |   |
+      | timeLineFillTopColor | color | 设置分时线填充渐变的顶部颜色  |   |
+      | timeLineFillBottomColor | color | 设置分时线填充渐变的底部颜色  |   |
+      | timeLineEndPointColor | color | 分时线呼吸灯的颜色  |   |
+      | timeLineEndRadius | integer | 分时线呼吸灯的颜色半径  |   |
+      | timeLineEndMultiply |float | timeLineEndMultiply  |   |
+      | selectedDateBoxVerticalPadding | dimension | 选中十字线X轴坐标连框纵向内边距  |   |
+      | selectedDateBoxHorizontalPadding | dimension | 选中十字线X轴坐标连框横向内边距  |   |
+      | mainLegendMarginTop | dimension | 设置主实图图例距离视图上边缘的距离  |   |
+      | legendMarginLeft | dimension | 设置图例距离视图左边缘的距离  |   |
+      | increaseColor | color |  设置涨的颜色 |   |
+      | decreaseColor | color | 设置跌的颜色  |   |
+      | betterXLabel | boolean | 设置是否自适应X左右边轴坐标的位置,默认true |   |
+      | labelTextSize | dimension | 设置坐标文字大小 |   |
+      | labelTextColor | color | 设置坐标轴坐标文字颜色  |   |
+      | yLabelAlign | boolean |  设置Y轴显示在左侧/右侧 |   |
+      | betterSelectedXLabel | boolean | b设置是否自适应X左右边轴坐标的位置,默认true|   |
+      | commonTextSize | dimension | 统一设置设置文字大小  |   |
+      | mainMarginTop | dimension | 设置上方padding  |   |
+      | paddingBottom | dimension | 设置下方padding  |   |
+      | childPaddingTop | dimension | 子视图的顶部padding  |   |
+      | commonTextColor | color |  设置通用文字颜色 |   |
+      | lineWidth | dimension | 全局通用线宽  |   |
+      | itemWidth | dimension | 设置每根K线总宽度(包含外间隙)  |   |
+      | candleWidth | dimension | 设置每根蜡烛图宽度  |   |
+      | candleLineWidth | dimension |   设置蜡烛线画笔宽(空心时的线宽) |   |
+      | chartLogo | reference | 设置K线显示的logo |   |
+      | limitTextColor | color | 设置主视图最大/最小值文字颜色 |   |
+      | limitTextSize | dimension | 设置主图片最大/最小值文字大小 |   |
+      | candleSolid | integer | 蜡烛是否空心  |   |
+      | gridLineWidth | dimension |  设置背景网格线宽 |   |
+      | gridLineColor | color |  设置背景网格线颜色 |   |
+      | gridLineRows | integer | 设置背景网格行数  |    |
+      | gridLineColumns | integer | 设置背景网格列数  |   |
+      | macdStrokeWidth | color | macd空心时线宽  |   |
+      | macdIncreaseColor | color | 设置macd 上涨颜色|   |
+      | macdDecreaseColor | color | 设置macd 下跌颜色 |   |
+      | macdWidth | dimension |  macd柱状图宽 |   |
+      | difColor | color | 设置DIF颜色  |   |
+      | deaColor | color | 设置DEA颜色  |   |
+      | macdColor | color | 设置MACD颜色  |   |
+      | wr1Color | color | 设置WR1颜色  |   |
+      | wr2Color | color | 设置WR2颜色    |   |
+      | wr3Color | color | 设置WR3颜色    |   |
+      | kColor | color |  设置K颜色 |   |
+      | dColor | color |  设置D颜色 |   |
+      | jColor | color | 设置J颜色  |   |
+      | rsi1Color | color | 设置RSI1颜色  |   |
+      | rsi2Color | color | 设置RSI2颜色 |   |
+      | ris3Color | color | 设置RSI3颜色   |   |
+      | upColor | color | 设置UP颜色 |   |
+      | mbColor | color | 设置MB颜色 |   |
+      | dnColor | color | 设置DN颜色 |   |
+      | ma1Color | color | 设置MA1颜色 |   |
+      | ma2Color | color | 设置MA2颜色  |   |
+      | ma3Color | color | 设置MA3颜色  |   |
+      | volMa1Color | color | 设置交易量MA1颜色  |   |
+      | volMa2Color | color | 设置交易量MA2颜色  |   |
+      | volLegendColor | color |  交易量图例颜色 |   |
+      | volLineChartColor | color |  设置当成交量视图显示为线时的颜色 |   |
+      | volLegendMarginTop | dimension | 交易量图例距离量视图上边缘的距离  |   |
 
               
 4. <b>初始化k线  Initialize K-line</b>
@@ -268,7 +283,8 @@
             滑动布局 com.icechao.klinelib.view.ScrollView
     
 
-## 更多API查看  More API [KLineChartView](https://github.com/icechao/KlineChart/blob/master/klinelib/src/main/java/com/icechao/klinelib/view/KLineChartView.java)或加QQ群咨询
+## 所有属性相关均有与之对应的Set方法
+
 
 ## 部分API  ________  kLineChartView为KLineChartView对象
 
@@ -389,7 +405,7 @@
             slidListener : SlidListener对象 监听滑动到最左和最右
             
 
-  ### K线左滑的超出范围 K-Line Left Slip Out of Range
+  ### K线左滑 右侧超出范围 Left sliding right side of K-line is out of range
         
          kLineChartView.setOverScrollRange(float overScrollRange);
             参数
@@ -437,18 +453,19 @@
         
          kLineChartView.setMacdStrokeModel(Status.HollowModel model);
             参数
-            NONE_STROKE     :   所有的值实心
-            All_STROKE      :   所有的值空心
-            INCREASE_STROKE :   增长的值空心
-            DECREASE_STROKE :   下跌的值空心
+            NONE_HOLLOW     :   所有的值实心
+            All_HOLLOW      :   所有的值空心
+            INCREASE_HOLLOW :   上扬的值空心
+            DECREASE_HOLLOW :   下扬的值空心
+
   ### K线空心设置 Setting of Kline hollow histogram
           
          kLineChartView.setCandleSolid(Status.HollowModel model);
             参数
-            NONE_STROKE     :   所有的值实心
-            All_STROKE      :   所有的值空心
-            INCREASE_STROKE :   增长的值空心
-            DECREASE_STROKE :   下跌的值空心      
+            NONE_HOLLOW     :   所有的值实心
+            All_HOLLOW      :   所有的值空心
+            INCREASE_HOLLOW :   增长的值空心
+            DECREASE_HOLLOW :   下跌的值空心
                   
   ### macd空心时线宽设置 Line width of MACD hollow histogram
         
@@ -500,21 +517,26 @@
             Status.VolChartStatus.LINE_CHART : 线状图
             
   ### 强制隐藏信息框 Forced Hiding Information Box
+
         kLineChartView.hideMarketInfoBox(boolean forceHide)  
         参数 
             true  : 隐藏
             false : 显示       
   
   ### 替换MainDraw,继承后自由实现功能 Replace MainDraw and implement functionality freely after inheritance
+
           kLineChartView.resetMainDraw(T t)
            
   ### 替换volDraw,继承后自由实现功能 Replace volDraw and implement functions freely after inheritance
+
           kLineChartView.resetVoDraw(T t)
                     
   ### 替换IndexDraw,继承后自由实现功能 Replace IndexDraw and implement functionality freely after inheritance
+
           kLineChartView.resetIndexDraw(Status.IndexStatus status, T t) 
   
   ### 最大最小值计算模式,影响Y轴的最大最小值 Max min calculation mode, affecting the max min value of Y axis
+
           kLineChartView.setMaxMinCalcModel(Status.MaxMinCalcModel model)
           参数 
               MaxMinCalcModel.CALC_NORMAL_WITH_LAST :   计算显示的线和最新线的全部值 默认值
@@ -523,5 +545,25 @@
               MaxMinCalcModel.CALC_CLOSE_WITH_SHOW  :   计算显示的线的close值
             
   ### 指标线所有指标可配置 具体配置方法查看Constants类  All indicators of the indicator line can be configured. See the Constants class for the specific configuration method
+
           修改后重置数据,会根据新指标计算          
  
+ ## 2.0.1更新
+
+     - 支持右侧坐标独立显示与内容不重叠
+     - 支持坐标轴显示在左侧
+     - 支持右侧独立坐标轴配置单独背景色
+     - 统一属性值名称
+
+ ## 2.0.2更新
+
+    - 属性selecedLabel修改为selectedXlabel
+    - 修改HollowModel枚举内容名称
+    - 修复resetDate展示位重置问题
+    - 修复值为成交量为0时计算出现负数问题
+
+ ## 2.0.3更新
+
+        - 添加setAutoFixScrollEnable方法控制可滚动为手动控制还是自动控制
+        - 网格线宽重置位置
+        - 渲染控制resetData时不渲染直到数据设置完成

@@ -1,92 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="KLineChartView">
+    <declare-styleable name="KChartView">
 
-
-        <attr name="priceLineBoxMarginRight" format="dimension" />
-        <attr name="priceLineBoxShapeWidth" format="dimension" />
-        <attr name="priceLineBoxShapeHeight" format="dimension" />
-        <attr name="priceLineBoxHeight" format="dimension" />
-        <attr name="priceLineBoxPadding" format="dimension" />
-        <attr name="priceLineBoxShapeTextMargin" format="dimension" />
         <attr name="priceLineWidth" format="dimension" />
         <attr name="priceLineColor" format="color" />
-        <attr name="priceLineBackgroundColor" format="color" />
+        <attr name="priceLabelInLineBoxMarginRight" format="dimension" />
+        <attr name="priceLabelInLineShapeWidth" format="dimension" />
+        <attr name="priceLabelInLineShapeHeight" format="dimension" />
+        <attr name="priceLabelInLineBoxHeight" format="dimension" />
+        <attr name="priceLabelInLineBoxPadding" format="dimension" />
+        <attr name="priceLabelInLineBoxShapeTextMargin" format="dimension" />
+        <attr name="priceLabelInLineClickable" format="boolean" />
+        <attr name="priceLabelInLineBoxBackgroundColor" format="color" />
+        <attr name="priceLabelRightBackgroundColor" format="color" />
+        <attr name="priceLabelInLineBoxBorderColor" format="color" />
+        <attr name="priceLabelInLineBoxBorderWidth" format="dimension" />
+        <attr name="priceLabelInLineBoxRadius" format="dimension" />
+        <attr name="priceLineRightLabelBackGroundAlpha" format="integer" />
         <attr name="priceLineRightColor" format="color" />
-        <attr name="priceLineRightLabelTextColor" format="color" />
-        <attr name="priceLineRightLabelBackGroundColor" format="color" />
-        <attr name="priceLineBoxBorderColor" format="color" />
-        <attr name="priceLineBoxBorderWidth" format="dimension" />
+        <attr name="priceLabelRightTextColor" format="color" />
+        <attr name="priceLineDotSolidWidth" format="dimension" />
+        <attr name="priceLineDotStrokeWidth" format="dimension" />
+        <attr name="priceLabelInLineTextSize" format="dimension" />
+        <attr name="priceLabelInLineTextColor" format="color" />
 
         <!--cross line -->
-        <attr name="selectXLineWidth" format="dimension" />
-        <attr name="selectYLineWidth" format="dimension" />
-        <attr name="selectXLineColor" format="color" />
-        <attr name="selectYLineColor" format="color" />
-        <attr name="selectCrossBigColor" format="color" />
-        <attr name="selectCrossPointRadius" format="dimension" />
-        <attr name="selectCrossPointColor" format="color" />
-        <attr name="selectShowCrossPoint" format="boolean" />
-        <attr name="selectYColor" format="color" />
-        <attr name="selectLineColor" format="color" />
-        <attr name="selectPriceBoxBackgroundColor" format="color" />
-        <attr name="selectTextSize" format="dimension" />
-        <attr name="selectPriceBoxHorizentalPadding" format="dimension" />
-        <attr name="selectPriceBoxVerticalPadding" format="dimension" />
-        <attr name="selectInfoBoxPadding" format="dimension" />
-        <attr name="selectInfoBoxMargin" format="dimension" />
-        <attr name="selectInfoBoxTextColor" format="color" />
-        <attr name="selectInfoBoxBorderColor" format="color" />
-        <attr name="selectInfoBoxBackgroundColor" format="color" />
-        <attr name="selectLabelBoderWidth" format="dimension" />
-        <attr name="selectLabelBoderColor" format="color" />
-
+        <attr name="selectedXLineWidth" format="dimension" />
+        <attr name="selectedYLineWidth" format="dimension" />
+        <attr name="selectedXLineColor" format="color" />
+        <attr name="selectedYLineColor" format="color" />
+        <attr name="selectedCrossBigColor" format="color" />
+        <attr name="selectedCrossPointRadius" format="dimension" />
+        <attr name="selectedCrossPointColor" format="color" />
+        <attr name="selectedShowCrossPoint" format="boolean" />
+        <attr name="selectedYColor" format="color" />
+        <attr name="selectedPriceBoxBackgroundColor" format="color" />
+        <attr name="selectedInfoTextSize" format="dimension" />
+        <attr name="selectedPriceBoxHorizontalPadding" format="dimension" />
+        <attr name="selectedPriceBoxVerticalPadding" format="dimension" />
+        <attr name="selectedInfoBoxPadding" format="dimension" />
+        <attr name="selectedInfoBoxMargin" format="dimension" />
+        <attr name="selectedInfoBoxTextColor" format="color" />
+        <attr name="selectedInfoBoxBorderColor" format="color" />
+        <attr name="selectedInfoBoxBackgroundColor" format="color" />
+        <attr name="selectedXLabelBorderWidth" format="dimension" />
+        <attr name="selectedXLabelBorderColor" format="color" />
+        <attr name="selectedXLabelBackgroundColor" format="color" />
+        <attr name="selectedXLabelTextColor" format="color" />
+        <attr name="selectedXLabelTextSize" format="dimension" />
+        <attr name="selectedInfoLabels" format="reference" />
         <!-- background -->
-        <attr name="yLabelMarginRight" format="dimension" />
-        <attr name="backgroundFillTopLolor" format="color" />
+        <attr name="closeFollowTouch" format="boolean" />
+        <attr name="yLabelMarginBorder" format="dimension" />
+        <attr name="backgroundFillTopColor" format="color" />
         <attr name="backgroundFillBottomColor" format="color" />
-        <attr name="backgroundAlpha" format="integer" />
-        <attr name="dotRightPriceBoxBackGroundAlpha" format="integer" />
 
         <!--time line-->
         <attr name="timeLineColor" format="color" />
         <attr name="timeLineFillTopColor" format="color" />
         <attr name="timeLineFillBottomColor" format="color" />
         <attr name="timeLineEndPointColor" format="color" />
-        <attr name="timeLineEndRadiu" format="integer" />
+        <attr name="timeLineEndRadius" format="integer" />
         <attr name="timeLineEndMultiply" format="float" />
 
         <!--公共的-->
 
-        <attr name="dateLabelVerticalPadding" format="dimension" />
-        <attr name="dateLabelHorizentalPadding" format="dimension" />
-        <attr name="marketInfosLabel" format="reference" />
+        <attr name="selectedDateBoxVerticalPadding" format="dimension" />
+        <attr name="selectedDateBoxHorizontalPadding" format="dimension" />
+
         <attr name="mainLegendMarginTop" format="dimension" />
+        <attr name="legendMarginLeft" format="dimension" />
         <attr name="increaseColor" format="color" />
         <attr name="betterXLabel" format="boolean" />
+        <attr name="labelTextSize" format="dimension" />
+        <attr name="labelTextColor" format="color" />
+        <attr name="yLabelAlign" format="boolean" />
         <attr name="betterSelectedXLabel" format="boolean" />
-        <attr name="backgroundColor" format="color" />
         <attr name="decreaseColor" format="color" />
-        <attr name="chartTextSize" format="dimension" />
+        <attr name="commonTextSize" />
         <attr name="paddingTop" format="dimension" />
         <attr name="paddingBottom" format="dimension" />
         <attr name="childPaddingTop" format="dimension" />
-        <attr name="textColor" format="color" />
+        <attr name="commonTextColor" format="color" />
         <attr name="lineWidth" format="dimension" />
         <attr name="itemWidth" format="dimension" />
         <attr name="chartLogo" format="reference" />
         <attr name="limitTextColor" format="color" />
         <attr name="limitTextSize" format="dimension" />
         <!--k线-->
-        <attr name="candleRightPadding" format="dimension" />
+        <attr name="candlePaddingTop" format="dimension" />
+        <attr name="candlePaddingBottom" format="dimension" />
         <attr name="candleWidth" format="dimension" />
         <attr name="candleLineWidth" format="dimension" />
-        <attr name="candleSolid" format="integer" />
+        <attr name="candleSolid">
+            <enum name="stroke" value="0" />
+            <enum name="solid" value="1" />
+        </attr>
         <!--grid line-->
         <attr name="gridLineWidth" format="dimension" />
         <attr name="gridLineColor" format="color" />
-        <attr name="gridLineRows" format="integer" />
-        <attr name="gridLineColumns" format="integer" />
+        <attr name="gridLineRows" />
+        <attr name="gridLineColumns" />
         <!--macd-->
         <attr name="macdStrokeWidth" format="color" />
         <attr name="macdIncreaseColor" format="color" />
@@ -121,8 +135,39 @@
         <attr name="volMa1Color" format="color" />
         <attr name="volMa2Color" format="color" />
         <!-- vol -->
-        <attr name="volLengendColor" format="color" />
+        <attr name="volLegendColor" format="color" />
         <attr name="volLineChartColor" format="color" />
-        <attr name="volLengendMarginTop" format="dimension" />
+        <attr name="volLegendMarginTop" format="dimension" />
+    </declare-styleable>
+
+    <attr name="gridLineRows" format="integer" />
+    <attr name="gridLineColumns" format="integer" />
+    <attr name="commonTextSize" />
+
+
+    <declare-styleable name="DepthChartView">
+        <attr name="gridLineRows" />
+        <attr name="gridLineColumns" />
+        <attr name="borderWidth" format="dimension" />
+        <attr name="commonTextSize" />
+        <attr name="borderTransverseLineColor" format="color" />
+        <attr name="borderTransverseLineWidth" format="dimension" />
+        <attr name="brokenLineWidth" format="dimension" />
+        <attr name="brokenLineFillWidth" format="dimension" />
+        <attr name="borderLineColor" format="color" />
+        <attr name="brokenLineMarginLeft" format="dimension" />
+        <attr name="brokenLineMarginTop" format="dimension" />
+        <attr name="brokenLineMarginBottom" format="dimension" />
+        <attr name="brokenLinerMarginRight" format="dimension" />
+        <attr name="horizontalLabelMarginTop" format="dimension" />
+        <attr name="horizontalLabelMarginBottom" format="dimension" />
+        <attr name="verticalLabelMarginRight" format="dimension" />
+        <attr name="axisTextColor" format="color" />
+        <attr name="axisTouchTextColor" format="color" />
+        <attr name="axisTouchRectBoundColor" format="color" />
+        <attr name="touchRingBgColor" format="dimension" />
+        <attr name="axisTouchRectBgColor" format="dimension" />
+        <attr name="ringRectWidth" format="dimension" />
+
     </declare-styleable>
 </resources>

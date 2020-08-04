@@ -8,7 +8,7 @@ import android.graphics.RectF;
 import android.support.annotation.NonNull;
 
 import com.icechao.klinelib.R;
-import com.icechao.klinelib.base.BaseKLineChartView;
+import com.icechao.klinelib.base.BaseKChartView;
 import com.icechao.klinelib.base.BaseRender;
 import com.icechao.klinelib.formatter.IValueFormatter;
 import com.icechao.klinelib.formatter.ValueFormatter;
@@ -31,7 +31,7 @@ public class MainRender extends BaseRender {
     private int itemCount;
     private String[] strings = new String[8];
     private IValueFormatter valueFormatter = new ValueFormatter();
-    private float candleWidth, margin, padding, mainLengendMarginTop,
+    private float candleWidth, margin, padding, mainLegendMarginTop,
             maOne, maTwo, maThree, bollUp, bollMb, bollDn;
     private final int indexInterval;
     private String indexMa1, indexMa2, indexMa3, indexBoll, indexUb, indexLb;
@@ -86,30 +86,30 @@ public class MainRender extends BaseRender {
 
 
     @Override
-    public void render(Canvas canvas, float lastX, float curX, @NonNull BaseKLineChartView view, int position, float... values) {
+    public void render(Canvas canvas, float lastX, float curX, @NonNull BaseKChartView view, int position, float... values) {
         if (view.getKlineStatus().showLine()) {
             if (position == itemCount - 1) {
                 float lastClosePrice = values[Constants.INDEX_CLOSE];
-                view.drawMainLine(canvas, linePaint, lastX, lastClosePrice, curX, view.getLastPrice());
-                view.drawFill(canvas, lineAreaPaint, lastX, lastClosePrice, curX, view.getLastPrice());
+                view.renderMainLine(canvas, linePaint, lastX, lastClosePrice, curX, view.getLastPrice());
+                view.renderLineFill(canvas, lineAreaPaint, lastX, lastClosePrice, curX, view.getLastPrice());
 
             } else if (position != 0) {
                 float lastClosePrice = values[Constants.INDEX_CLOSE];
                 float closePrice = values[Constants.INDEX_CLOSE + indexInterval];
-                view.drawMainLine(canvas, linePaint, lastX, lastClosePrice, curX, closePrice);
-                view.drawFill(canvas, lineAreaPaint, lastX, lastClosePrice, curX, closePrice);
+                view.renderMainLine(canvas, linePaint, lastX, lastClosePrice, curX, closePrice);
+                view.renderLineFill(canvas, lineAreaPaint, lastX, lastClosePrice, curX, closePrice);
             }
 
         } else {
             if (position == 0) {
-                drawCandle(view, canvas, curX,
+                renderCandle(view, canvas, curX,
                         values[Constants.INDEX_HIGH],
                         values[Constants.INDEX_LOW],
                         values[Constants.INDEX_OPEN],
                         values[Constants.INDEX_CLOSE],
                         position);
             } else {
-                drawCandle(view, canvas, curX,
+                renderCandle(view, canvas, curX,
                         values[Constants.INDEX_HIGH + indexInterval],
                         values[Constants.INDEX_LOW + indexInterval],
                         values[Constants.INDEX_OPEN + indexInterval],
@@ -152,12 +152,12 @@ public class MainRender extends BaseRender {
         }
     }
 
-    private void drawLine(float lastX, float curX, @NonNull Canvas canvas, @NonNull BaseKLineChartView view, int position, float start, float animEnd, Paint paint, float end) {
+    private void drawLine(float lastX, float curX, @NonNull Canvas canvas, @NonNull BaseKChartView view, int position, float start, float animEnd, Paint paint, float end) {
         if (Float.MIN_VALUE != start) {
             if (itemCount - 1 == position && 0 != animEnd && view.isAnimationLast()) {
-                view.drawMainLine(canvas, paint, lastX, start, curX, animEnd);
+                view.renderMainLine(canvas, paint, lastX, start, curX, animEnd);
             } else {
-                view.drawMainLine(canvas, paint, lastX, start, curX, end);
+                view.renderMainLine(canvas, paint, lastX, start, curX, end);
             }
         }
     }
@@ -165,10 +165,10 @@ public class MainRender extends BaseRender {
 
     @Override
     @SuppressWarnings("all")
-    public void drawText(@NonNull Canvas canvas, @NonNull BaseKLineChartView view, float x, float y, int position, float[] values) {
+    public void renderText(@NonNull Canvas canvas, @NonNull BaseKChartView view, float x, float y, int position, float[] values) {
 
         //修改头文字显示在顶部
-        y = maTextHeight + mainLengendMarginTop;
+        y = maTextHeight + mainLegendMarginTop;
         if (!view.getKlineStatus().showLine()) {
             Status.MainStatus status = view.getStatus();
             if (status == Status.MainStatus.MA) {
@@ -200,7 +200,7 @@ public class MainRender extends BaseRender {
                 }
             }
         }
-        if (view.getShowSelected() && !view.forceHideMarket()) {
+        if (view.getShowSelected() && !view.hideMarketInfo()) {
             drawSelector(view, canvas, values);
         }
     }
@@ -226,7 +226,7 @@ public class MainRender extends BaseRender {
      * @param open   开盘价
      * @param close  收盘价
      */
-    private void drawCandle(BaseKLineChartView view, Canvas canvas, float x, float high, float low, float open, float close, int position) {
+    private void renderCandle(BaseKChartView view, Canvas canvas, float x, float high, float low, float open, float close, int position) {
         high = view.getMainY(high);
         low = view.getMainY(low);
         open = view.getMainY(open);
@@ -239,15 +239,15 @@ public class MainRender extends BaseRender {
         float cancleLeft = x - r;
         float candleright = x + r;
         if (open < close) {//跌
-            drawCandle(canvas, x, high, low, open, close, cancleLeft, candleright, downPaint, downLinePaint);
+            renderCandle(canvas, x, high, low, open, close, cancleLeft, candleright, downPaint, downLinePaint);
         } else if (open > close) {//涨
-            drawCandle(canvas, x, high, low, close, open, cancleLeft, candleright, upPaint, upLinePaint);
+            renderCandle(canvas, x, high, low, close, open, cancleLeft, candleright, upPaint, upLinePaint);
         } else {
-            drawCandle(canvas, x, high, low, close - 1, open, cancleLeft, candleright, upPaint, upLinePaint);
+            renderCandle(canvas, x, high, low, close - 1, open, cancleLeft, candleright, upPaint, upLinePaint);
         }
     }
 
-    private void drawCandle(Canvas canvas, float x, float high, float low, float open, float close, float cancleLeft, float candleright, Paint paint, Paint linePaint) {
+    private void renderCandle(Canvas canvas, float x, float high, float low, float open, float close, float cancleLeft, float candleright, Paint paint, Paint linePaint) {
         canvas.drawRect(cancleLeft, close, candleright, open, paint);
         if (high < open) {
             canvas.drawLine(x, open, x, high, linePaint);
@@ -265,7 +265,7 @@ public class MainRender extends BaseRender {
      * @param values
      */
     @SuppressLint("DefaultLocale")
-    protected void drawSelector(BaseKLineChartView view, Canvas canvas, float[] values) {
+    protected void drawSelector(BaseKChartView view, Canvas canvas, float[] values) {
 
         int index = view.getSelectedIndex();
 
@@ -290,10 +290,10 @@ public class MainRender extends BaseRender {
         width += padding * 2;
 
         float x = view.getX(index) + view.getTranslateX();
-        if (x > view.getViewWidth() / 2) {
+        if (x > view.getChartWidth() / 2) {
             left = margin;
         } else {
-            left = view.getViewWidth() - width - margin;
+            left = view.getChartWidth() - width - margin;
         }
 
         float right = left + width;
@@ -371,12 +371,12 @@ public class MainRender extends BaseRender {
      * 设置选择器弹出框相关颜色 selected popupwindow text color
      *
      * @param textColor       文字
-     * @param boderColor      边框
+     * @param borderColor     边框
      * @param backgroundColor 背景
      */
-    public void setSelectorTextColor(int textColor, int boderColor, int backgroundColor) {
+    public void setSelectorColors(int textColor, int borderColor, int backgroundColor) {
         selectorTextPaint.setColor(textColor);
-        selectorBorderPaint.setColor(boderColor);
+        selectorBorderPaint.setColor(borderColor);
         selectorBackgroundPaint.setColor(backgroundColor);
     }
 
@@ -396,15 +396,6 @@ public class MainRender extends BaseRender {
         selectedTextHeight = metrics.descent - metrics.ascent;
         selectedTextBaseLine = (selectedTextHeight - metrics.bottom - metrics.top) / 2;
 
-    }
-
-    /**
-     * 设置选择器背景 selected popupwindow  background color
-     *
-     * @param color color
-     */
-    public void setSelectorBackgroundColor(int color) {
-        selectorBackgroundPaint.setColor(color);
     }
 
     /**
@@ -434,7 +425,7 @@ public class MainRender extends BaseRender {
 
 
     @Override
-    public void startAnim(BaseKLineChartView view, float[] values) {
+    public void startAnim(BaseKChartView view, float[] values) {
 
         switch (view.getStatus()) {
             case MA:
@@ -482,19 +473,19 @@ public class MainRender extends BaseRender {
 
     public void setStroke(Status.HollowModel isStroke) {
         switch (isStroke) {
-            case INCREASE_STROKE:
-                upPaint.setStyle(Paint.Style.STROKE);
-                downPaint.setStyle(Paint.Style.FILL);
-                break;
-            case DECREASE_STROKE:
+            case DECREASE_HOLLOW:
                 upPaint.setStyle(Paint.Style.FILL);
                 downPaint.setStyle(Paint.Style.STROKE);
                 break;
-            case ALL_STROKE:
+            case INCREASE_HOLLOW:
+                upPaint.setStyle(Paint.Style.STROKE);
+                downPaint.setStyle(Paint.Style.FILL);
+                break;
+            case ALL_HOLLOW:
                 upPaint.setStyle(Paint.Style.STROKE);
                 downPaint.setStyle(Paint.Style.STROKE);
                 break;
-            case NONE_STROKE:
+            case NONE_HOLLOW:
                 upPaint.setStyle(Paint.Style.FILL);
                 downPaint.setStyle(Paint.Style.FILL);
                 break;
@@ -513,7 +504,7 @@ public class MainRender extends BaseRender {
         downLinePaint.setColor(color);
     }
 
-    public void renderMaxMinValue(Canvas canvas, BaseKLineChartView view,
+    public void renderMaxMinValue(Canvas canvas, BaseKChartView view,
                                   float maxX, float mainHighMaxValue,
                                   float minX, float mainLowMinValue) {
         if (!view.getKlineStatus().showLine()) {
@@ -596,7 +587,7 @@ public class MainRender extends BaseRender {
      * @param mainLegendMarginTop top
      */
     public void setMainLegendMarginTop(float mainLegendMarginTop) {
-        this.mainLengendMarginTop = mainLegendMarginTop;
+        this.mainLegendMarginTop = mainLegendMarginTop;
     }
 
     public void setSelectInfoBoxMargin(float margin) {

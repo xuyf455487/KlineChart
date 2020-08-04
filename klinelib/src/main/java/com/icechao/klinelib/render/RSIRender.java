@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 
-import com.icechao.klinelib.base.BaseKLineChartView;
+import com.icechao.klinelib.base.BaseKChartView;
 import com.icechao.klinelib.base.BaseRender;
 import com.icechao.klinelib.formatter.IValueFormatter;
 import com.icechao.klinelib.formatter.ValueFormatter;
@@ -43,26 +43,26 @@ public class RSIRender extends BaseRender {
 
 
     @Override
-    public void render(Canvas canvas, float lastX, float curX, @NonNull BaseKLineChartView view, int position, float... values) {
+    public void render(Canvas canvas, float lastX, float curX, @NonNull BaseKChartView view, int position, float... values) {
         if (Constants.RSI_1 != -1 && Float.MIN_VALUE != values[Constants.INDEX_RSI_1] && position != 0) {
-            view.drawChildLine(canvas, rsi1Paint, lastX,
+            view.renderChildLine(canvas, rsi1Paint, lastX,
                     values[Constants.INDEX_RSI_1],
                     curX, values[Constants.INDEX_RSI_1 + indexInterval]);
         }
         if (Constants.RSI_2 != -1 && Float.MIN_VALUE != values[Constants.INDEX_RSI_2] && position != 0) {
-            view.drawChildLine(canvas, rsi2Paint, lastX,
+            view.renderChildLine(canvas, rsi2Paint, lastX,
                     values[Constants.INDEX_RSI_2],
                     curX, values[Constants.INDEX_RSI_2 + indexInterval]);
         }
         if (Constants.RSI_3 != -1 && Float.MIN_VALUE != values[Constants.INDEX_RSI_3] && position != 0) {
-            view.drawChildLine(canvas, rsi3Paint, lastX,
+            view.renderChildLine(canvas, rsi3Paint, lastX,
                     values[Constants.INDEX_RSI_3],
                     curX, values[Constants.INDEX_RSI_3 + indexInterval]);
         }
     }
 
     @Override
-    public void drawText(@NonNull Canvas canvas, @NonNull BaseKLineChartView view, float x, float y, int position, float[] values) {
+    public void renderText(@NonNull Canvas canvas, @NonNull BaseKChartView view, float x, float y, int position, float[] values) {
         if (Constants.getRsi1() > 0 && Float.MIN_VALUE != values[Constants.INDEX_RSI_1]) {
             canvas.drawText(legendText1, x, y, rsi1Paint);
             x += rsi1Paint.measureText(legendText1);
@@ -105,7 +105,7 @@ public class RSIRender extends BaseRender {
     }
 
     @Override
-    public void startAnim(BaseKLineChartView view, float... values) {
+    public void startAnim(BaseKChartView view, float... values) {
 
     }
 

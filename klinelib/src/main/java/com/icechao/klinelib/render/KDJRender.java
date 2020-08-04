@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import com.icechao.klinelib.R;
 import com.icechao.klinelib.base.BaseRender;
-import com.icechao.klinelib.base.BaseKLineChartView;
+import com.icechao.klinelib.base.BaseKChartView;
 import com.icechao.klinelib.formatter.IValueFormatter;
 import com.icechao.klinelib.formatter.ValueFormatter;
 import com.icechao.klinelib.utils.Constants;
@@ -34,34 +34,34 @@ public class KDJRender extends BaseRender {
 
 
     @Override
-    public void render(Canvas canvas, float lastX, float curX, @NonNull BaseKLineChartView view, int position, float... values) {
+    public void render(Canvas canvas, float lastX, float curX, @NonNull BaseKChartView view, int position, float... values) {
         if (position == 0) {
             return;
         }
         if (Float.MIN_VALUE != values[Constants.INDEX_KDJ_K]) {
-            view.drawChildLine(canvas, mKPaint, lastX,
+            view.renderChildLine(canvas, mKPaint, lastX,
                     values[Constants.INDEX_KDJ_K], curX,
                     values[Constants.INDEX_KDJ_K + indexInterval]);
         }
         if (Float.MIN_VALUE != values[Constants.INDEX_KDJ_D]) {
-            view.drawChildLine(canvas, mDPaint, lastX,
+            view.renderChildLine(canvas, mDPaint, lastX,
                     values[Constants.INDEX_KDJ_D], curX,
                     values[Constants.INDEX_KDJ_D + indexInterval]);
         }
         if (Float.MIN_VALUE != values[Constants.INDEX_KDJ_J]) {
-            view.drawChildLine(canvas, mJPaint, lastX,
+            view.renderChildLine(canvas, mJPaint, lastX,
                     values[Constants.INDEX_KDJ_J], curX,
                     values[Constants.INDEX_KDJ_J + indexInterval]);
         }
     }
 
     @Override
-    public void drawText(@NonNull Canvas canvas, @NonNull BaseKLineChartView view, float x, float y, int position, float[] values) {
+    public void renderText(@NonNull Canvas canvas, @NonNull BaseKChartView view, float x, float y, int position, float[] values) {
 //        IKDJ point = (IKDJ) view.getItem(position);
         if (Float.MIN_VALUE != values[Constants.INDEX_KDJ_K]) {
             String text = String.format(Constants.KDJ_TOP_TEXT_TAMPLATE, Constants.getKdjK(), Constants.getKdjD(), Constants.getKdjJ());
-            canvas.drawText(text, x, y, view.getTextPaint());
-            x += view.getTextPaint().measureText(text);
+            canvas.drawText(text, x, y, view.getCommonTextPaint());
+            x += view.getCommonTextPaint().measureText(text);
 
             text = kIndexLabel + getValueFormatter().format(values[Constants.INDEX_KDJ_K]) + " ";
             canvas.drawText(text, x, y, mKPaint);
@@ -84,7 +84,6 @@ public class KDJRender extends BaseRender {
     @Override
     public float getMinValue(float... values) {
         return Math.min(values[Constants.INDEX_KDJ_K], Math.min(values[Constants.INDEX_KDJ_D], values[Constants.INDEX_KDJ_J]));
-
     }
 
     @Override
@@ -109,7 +108,7 @@ public class KDJRender extends BaseRender {
 
 
     @Override
-    public void startAnim(BaseKLineChartView view, float... values) {
+    public void startAnim(BaseKChartView view, float... values) {
         if (kdjK != 0) {
             view.generaterAnimator(kdjK, values[Constants.INDEX_KDJ_K], (valueAnimator) -> kdjK = (float) valueAnimator.getAnimatedValue());
             view.generaterAnimator(kdjD, values[Constants.INDEX_KDJ_D], (valueAnimator) -> kdjD = (float) valueAnimator.getAnimatedValue());

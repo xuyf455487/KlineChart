@@ -12,6 +12,10 @@ package com.icechao.klinelib.utils;
  *************************************************************************/
 public class Status {
 
+    public enum PriceLineLabelState {
+        PRICE_LINE_WITH_LABEL, PRICE_LINE_RIGHT_LABEL;
+    }
+
     public enum MainStatus {
         MA, BOLL, NONE
     }
@@ -106,10 +110,10 @@ public class Status {
     }
 
     public enum HollowModel {
-        NONE_STROKE(0),//全实心
-        ALL_STROKE(1), //全空心
-        INCREASE_STROKE(2),//涨空心
-        DECREASE_STROKE(3);//跌实心
+        NONE_HOLLOW(0),//全实心
+        ALL_HOLLOW(1), //全空心
+        DECREASE_HOLLOW(2),//涨空心
+        INCREASE_HOLLOW(3);//跌实心
 
         private int model;
 
@@ -121,13 +125,13 @@ public class Status {
             switch (integer) {
                 default:
                 case 0:
-                    return NONE_STROKE;
+                    return NONE_HOLLOW;
                 case 1:
-                    return ALL_STROKE;
+                    return ALL_HOLLOW;
                 case 2:
-                    return INCREASE_STROKE;
+                    return DECREASE_HOLLOW;
                 case 3:
-                    return DECREASE_STROKE;
+                    return INCREASE_HOLLOW;
             }
         }
     }
@@ -139,6 +143,17 @@ public class Status {
         CALC_NORMAL_WITH_LAST,//计算显示的线和最新线的全部值
         CALC_CLOSE_WITH_LAST,//计算显示的线和最新线的close值
     }
+
+    public enum YLabelModel {
+        LABEL_WITH_GRID,
+        LABEL_NONE_GRID
+    }
+
+    public enum YLabelAlign {
+        LEFT,
+        RIGHT
+    }
+
 }
 
 

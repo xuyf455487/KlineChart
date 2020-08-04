@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.icechao.klinelib.R;
 import com.icechao.klinelib.base.BaseRender;
-import com.icechao.klinelib.base.BaseKLineChartView;
+import com.icechao.klinelib.base.BaseKChartView;
 import com.icechao.klinelib.formatter.IValueFormatter;
 import com.icechao.klinelib.formatter.ValueFormatter;
 import com.icechao.klinelib.utils.Constants;
@@ -40,7 +40,7 @@ public class MACDRender extends BaseRender {
     private ValueFormatter valueFormatter = new ValueFormatter();
     private final int indexInterval;
     private String macdIndexLabel, difIndexLabel, deaIndexLabel;
-    private Status.HollowModel macdStrokeModel = Status.HollowModel.NONE_STROKE;
+    private Status.HollowModel macdStrokeModel = Status.HollowModel.NONE_HOLLOW;
 
     public MACDRender(Context context) {
         indexInterval = Constants.getCount();
@@ -53,17 +53,17 @@ public class MACDRender extends BaseRender {
 
 
     @Override
-    public void render(Canvas canvas, float lastX, float curX, @NonNull BaseKLineChartView view, int position, float... values) {
+    public void render(Canvas canvas, float lastX, float curX, @NonNull BaseKChartView view, int position, float... values) {
 
         switch (macdStrokeModel) {
             default:
-            case NONE_STROKE:
+            case NONE_HOLLOW:
                 drawMACD(canvas, view, curX, values[Constants.INDEX_MACD_MACD + (position == 0 ? 0 : indexInterval)], redPaint, greenPaint);
                 break;
-            case ALL_STROKE:
+            case ALL_HOLLOW:
                 drawMACD(canvas, view, curX, values[Constants.INDEX_MACD_MACD + (position == 0 ? 0 : indexInterval)], redStrokePaint, greenStrokePaint);
                 break;
-            case INCREASE_STROKE:
+            case DECREASE_HOLLOW:
                 if (values.length <= Constants.getCount() || values[Constants.INDEX_MACD_MACD] < values[Constants.INDEX_MACD_MACD + indexInterval]) {
                     drawMACD(canvas, view, curX, values[Constants.INDEX_MACD_MACD + (position == 0 ? 0 : indexInterval)], redPaint, greenPaint);
                     drawMACD(canvas, view, curX, values[Constants.INDEX_MACD_MACD + (position == 0 ? 0 : indexInterval)], redPaint, greenPaint);
@@ -71,7 +71,7 @@ public class MACDRender extends BaseRender {
                     drawMACD(canvas, view, curX, values[Constants.INDEX_MACD_MACD + (position == 0 ? 0 : indexInterval)], redStrokePaint, greenStrokePaint);
                 }
                 break;
-            case DECREASE_STROKE:
+            case INCREASE_HOLLOW:
                 if (values.length <= Constants.getCount() || values[Constants.INDEX_MACD_MACD] > values[Constants.INDEX_MACD_MACD + indexInterval]) {
                     drawMACD(canvas, view, curX, values[Constants.INDEX_MACD_MACD + (position == 0 ? 0 : indexInterval)], redPaint, greenPaint);
                     drawMACD(canvas, view, curX, values[Constants.INDEX_MACD_MACD + (position == 0 ? 0 : indexInterval)], redPaint, greenPaint);
@@ -85,17 +85,17 @@ public class MACDRender extends BaseRender {
             return;
         }
         if (Float.MIN_VALUE != values[Constants.INDEX_MACD_DEA]) {
-            view.drawChildLine(canvas, deaPaint, lastX, values[Constants.INDEX_MACD_DEA], curX, values[Constants.INDEX_MACD_DEA + indexInterval]);
+            view.renderChildLine(canvas, deaPaint, lastX, values[Constants.INDEX_MACD_DEA], curX, values[Constants.INDEX_MACD_DEA + indexInterval]);
         }
         if (Float.MIN_VALUE != values[Constants.INDEX_MACD_DIF]) {
-            view.drawChildLine(canvas, difPaint, lastX, values[Constants.INDEX_MACD_DIF], curX, values[Constants.INDEX_MACD_DIF + indexInterval]);
+            view.renderChildLine(canvas, difPaint, lastX, values[Constants.INDEX_MACD_DIF], curX, values[Constants.INDEX_MACD_DIF + indexInterval]);
         }
     }
 
     @Override
-    public void drawText(@NonNull Canvas canvas, @NonNull BaseKLineChartView view, float x, float y, int position, float[] values) {
+    public void renderText(@NonNull Canvas canvas, @NonNull BaseKChartView view, float x, float y, int position, float[] values) {
         String text = String.format(Constants.MACD_TOP_TEXT_TAMPLATE, Constants.MACD_S, Constants.MACD_L, Constants.MACD_M);
-        canvas.drawText(text, x, y, view.getTextPaint());
+        canvas.drawText(text, x, y, view.getCommonTextPaint());
         x += macdPaint.measureText(text);
 
         text = macdIndexLabel + getValueFormatter().format(values[Constants.INDEX_MACD_MACD]) + "  ";
@@ -120,7 +120,7 @@ public class MACDRender extends BaseRender {
     }
 
     @Override
-    public void startAnim(BaseKLineChartView view, float... values) {
+    public void startAnim(BaseKChartView view, float... values) {
 
     }
 
@@ -154,7 +154,7 @@ public class MACDRender extends BaseRender {
      * @param x
      * @param macd
      */
-    private void drawMACD(Canvas canvas, BaseKLineChartView view, float x, float macd, Paint redPaint, Paint greenPaint) {
+    private void drawMACD(Canvas canvas, BaseKChartView view, float x, float macd, Paint redPaint, Paint greenPaint) {
         float r = macdWidth / 2 * view.getScaleX();
         if (macd >= 0) {
             canvas.drawRect(x - r, view.getChildY(macd), x + r, view.getChildY(0), redPaint);

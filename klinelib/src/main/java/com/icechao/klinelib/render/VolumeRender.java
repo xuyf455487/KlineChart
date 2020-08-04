@@ -6,13 +6,15 @@ import android.graphics.Paint;
 import android.support.annotation.NonNull;
 
 import com.icechao.klinelib.R;
-import com.icechao.klinelib.base.BaseKLineChartView;
+import com.icechao.klinelib.base.BaseKChartView;
 import com.icechao.klinelib.base.BaseRender;
 import com.icechao.klinelib.formatter.IValueFormatter;
 import com.icechao.klinelib.formatter.ValueFormatter;
 import com.icechao.klinelib.utils.Constants;
 import com.icechao.klinelib.utils.NumberTools;
 import com.icechao.klinelib.utils.Status;
+
+import java.util.Arrays;
 
 /*************************************************************************
  * Description   :
@@ -32,7 +34,7 @@ public class VolumeRender extends BaseRender {
     private Paint maOnePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint maTwoPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint volLeftPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private float volWidth, lineVolWidth, volLengendMarginTop, endMaOne, endMaTwo;
+    private float volWidth, lineVolWidth, volLegendMarginTop, endMaOne, endMaTwo;
     private IValueFormatter valueFormatter = new ValueFormatter();
     private int itemsCount;
     private final int indexInterval;
@@ -48,7 +50,7 @@ public class VolumeRender extends BaseRender {
 
 
     @Override
-    public void render(Canvas canvas, float lastX, float curX, @NonNull BaseKLineChartView view, int position, float... values) {
+    public void render(Canvas canvas, float lastX, float curX, @NonNull BaseKChartView view, int position, float... values) {
         if (position == 0) {
             drawHistogram(canvas, curX,
                     values[Constants.INDEX_VOL],
@@ -73,17 +75,17 @@ public class VolumeRender extends BaseRender {
 
     }
 
-    private void drawLine(float lastX, float curX, @NonNull Canvas canvas, @NonNull BaseKLineChartView view, int position, float lastMa, float endMa5, Paint ma5Paint, float currentMa) {
+    private void drawLine(float lastX, float curX, @NonNull Canvas canvas, @NonNull BaseKChartView view, int position, float lastMa, float endMa5, Paint ma5Paint, float currentMa) {
         if (Float.MIN_VALUE != lastMa) {
             if (position == itemsCount - 1 && 0 != endMa5 && view.isAnimationLast()) {
-                view.drawVolLine(canvas, ma5Paint, lastX, lastMa, curX, endMa5);
+                view.renderVolLine(canvas, ma5Paint, lastX, lastMa, curX, endMa5);
             } else {
-                view.drawVolLine(canvas, ma5Paint, lastX, lastMa, curX, currentMa);
+                view.renderVolLine(canvas, ma5Paint, lastX, lastMa, curX, currentMa);
             }
         }
     }
 
-    private void drawHistogram(Canvas canvas, float curX, float vol, float open, float close, BaseKLineChartView view, int position) {
+    private void drawHistogram(Canvas canvas, float curX, float vol, float open, float close, BaseKChartView view, int position) {
 
         float top, r = volWidth / 2 * view.getScaleX();
         int bottom = view.getVolRectBottom();
@@ -92,8 +94,8 @@ public class VolumeRender extends BaseRender {
         } else {
             top = view.getVolY(vol);
         }
-        if (0 != vol && top > bottom - 1) {
-            top = bottom - 1;
+        if (0 != vol && top > bottom - 2) {
+            top = bottom - 2;
         }
         if ((null == view.getVolChartStatus() && view.getKlineStatus().showLine()) || view.getVolChartStatus() == Status.VolChartStatus.LINE_CHART) {
             canvas.drawRect(curX - lineVolWidth, top, curX + lineVolWidth, bottom, linePaint);
@@ -106,16 +108,16 @@ public class VolumeRender extends BaseRender {
     }
 
     @Override
-    public void drawText(@NonNull Canvas canvas, @NonNull BaseKLineChartView view, float x, float y, int position, float[] values) {
+    public void renderText(@NonNull Canvas canvas, @NonNull BaseKChartView view, float x, float y, int position, float[] values) {
         String text;
-        volLengendMarginTop += volLengendMarginTop;
+        volLegendMarginTop += volLegendMarginTop;
         if (position == itemsCount - 1 && view.isAnimationLast()) {
             text = volIndex + NumberTools.formatAmount(getValueFormatter().format(view.getLastVol())) + "  ";
         } else {
             text = volIndex + NumberTools.formatAmount(getValueFormatter().format(values[Constants.INDEX_VOL])) + "  ";
         }
         canvas.drawText(text, x, y, volLeftPaint);
-        x += view.getTextPaint().measureText(text);
+        x += view.getCommonTextPaint().measureText(text);
 
         if (position == itemsCount - 1 && view.isAnimationLast() && 0 != endMaOne) {
             text = volMaIndex1 + NumberTools.formatAmount(getValueFormatter().format(endMaOne)) + "  ";
@@ -149,7 +151,7 @@ public class VolumeRender extends BaseRender {
     }
 
     @Override
-    public void startAnim(BaseKLineChartView view, float... values) {
+    public void startAnim(BaseKChartView view, float... values) {
         if (0 == endMaOne) {
             endMaOne = values[Constants.INDEX_VOL_MA_1];
             endMaTwo = values[Constants.INDEX_VOL_MA_2];
@@ -173,7 +175,7 @@ public class VolumeRender extends BaseRender {
      *
      * @param color
      */
-    public void setVolLengendColor(int color) {
+    public void setVolLegendColor(int color) {
         this.volLeftPaint.setColor(color);
     }
 
@@ -221,8 +223,8 @@ public class VolumeRender extends BaseRender {
         linePaint.setColor(color);
     }
 
-    public void setVolLengendMarginTop(float volLengendMarginTop) {
-        this.volLengendMarginTop = volLengendMarginTop;
+    public void setVolLegendMarginTop(float volLegendMarginTop) {
+        this.volLegendMarginTop = volLegendMarginTop;
     }
 
     public void setIncreaseColor(int color) {
@@ -231,5 +233,19 @@ public class VolumeRender extends BaseRender {
 
     public void setDecreaseColor(int color) {
         this.decreasePaint.setColor(color);
+    }
+
+    public float getMinValue(float... values) {
+        int length = values.length;
+        if (length == 0) {
+            return 0;
+        }
+        Arrays.sort(values);
+        for (int i = 0; i < length; i++) {
+            if (values[i] >= 0) {
+                return values[i];
+            }
+        }
+        return 0;
     }
 }
